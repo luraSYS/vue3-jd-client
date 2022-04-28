@@ -1,30 +1,53 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <a href="javascript:;" class="to-top" v-show="showToTop" @click="goTop"></a>
+  <Header id="id" v-show="$route.meta.showH" />
+  <router-view></router-view>
+  <Footer v-show="$route.meta.showF" />
 </template>
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import Header from '@/components/Header'
+import Footer from '@/components/Footer'
+import { ref, watch } from 'vue'
+import { getUser } from '@/api'
+import { useRoute } from 'vue-router'
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
+export default {
+  components: {
+    Header,
+    Footer,
+  },
+  setup() {
+    getUser()
+    const route = useRoute()
+    let showToTop = ref(false)
+    const goTop = () => {
+      scrollTo(0, 0)
     }
-  }
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 440) showToTop.value = true
+      else showToTop.value = false
+    })
+    watch(route, () => {
+      goTop()
+    })
+    return {
+      showToTop,
+      goTop,
+    }
+  },
+}
+</script>
+
+<style lang="less" scoped>
+.to-top {
+  position: fixed;
+  width: 38px;
+  height: 38px;
+  z-index: 9;
+  right: 10px;
+  bottom: 110px;
+  background: url('./assets/images/upload/top.png') no-repeat;
+  background-size: 38px;
 }
 </style>
