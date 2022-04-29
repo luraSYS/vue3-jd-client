@@ -66,7 +66,7 @@
               v-for="value in $store.state.Shop.cloths.iconName2.length"
               :key="value"
               :icon="require(`./images/穿搭风格${value}.webp`)"
-              :text="$store.state.Shop.cloths.iconName[value - 1]"
+              :text="$store.state.Shop.cloths.iconName2[value - 1]"
             />
           </van-grid>
         </div>

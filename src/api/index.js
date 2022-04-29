@@ -100,7 +100,19 @@ export async function modAddress(data, receiptid, userid) {
 }
 
 // 四、购物车相关
+// 获取用户购物车信息
 export async function getCar(userid) {
   const res = await Car.reqGetShoppingCar(userid)
   if (res.status == 0) store.commit('User/saveCars', res.data)
+}
+// 添加商品至购物车
+export async function AddToCar(data) {
+  const res = await Car.reqAddToCar(data)
+  if (res.status == 0) store.commit('User/addToCar', data.proid)
+  Toast(res.message)
+}
+
+export async function DelFromCar(data) {
+  const res = await Car.reqDelFromCar(data)
+  if (res.status == 0) store.commit('User/delFromCar', data.proid)
 }

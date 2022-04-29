@@ -1,6 +1,8 @@
 export default {
   namespaced: true,
   state: {
+    firstHome: true,
+    currentRoute: 0,
     partName: ['boutique', 'hot', 'promotion'],
     partTitle: ['精品推荐', '热门商品', '活动商品'],
     partDesc: [
@@ -111,11 +113,19 @@ export default {
   getters: {},
   mutations: {
     saveProduct(state, pro) {
+      state.firstHome = false
       if (pro.data.length < 8) state[pro.part].have = false
       state[pro.part].shops.push(...pro.data)
     },
     stopProduct(state, part) {
       state[part].have = false
+    },
+    modCurrentRoute(state, path) {
+      if (path == '/home') state.currentRoute = 0
+      if (path == '/category') state.currentRoute = 1
+      if (path == '/address') state.currentRoute = 2
+      if (path == '/car') state.currentRoute = 3
+      if (path == '/mine') state.currentRoute = 4
     },
   },
   actions: {},

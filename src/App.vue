@@ -1,6 +1,6 @@
 <template>
   <a href="javascript:;" class="to-top" v-show="showToTop" @click="goTop"></a>
-  <Header id="id" v-show="$route.meta.showH" />
+  <Header v-show="$route.meta.showH" />
   <router-view></router-view>
   <Footer v-show="$route.meta.showF" />
 </template>
@@ -11,6 +11,7 @@ import Footer from '@/components/Footer'
 import { ref, watch } from 'vue'
 import { getUser } from '@/api'
 import { useRoute } from 'vue-router'
+import store from '@/store'
 
 export default {
   components: {
@@ -29,6 +30,7 @@ export default {
       else showToTop.value = false
     })
     watch(route, () => {
+      store.commit('Shop/modCurrentRoute', route.path)
       goTop()
     })
     return {

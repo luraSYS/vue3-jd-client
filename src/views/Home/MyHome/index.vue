@@ -30,7 +30,7 @@
 import ShopPart from '@/components/ShopPart'
 import { mapState } from 'vuex'
 export default {
-  name: 'Home',
+  name: 'MyHome',
   components: { ShopPart },
   setup() {
     return {}

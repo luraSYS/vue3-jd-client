@@ -92,13 +92,16 @@ export default {
   name: 'Car',
   components: { Header2, Shopitem, ShopsRecommend },
   setup() {
-    let totprice = ref(0)
     // console.log('car')
     setTimeout(() => {
       if (!userStore.state.visitedAddress)
         getAddress(userStore.state.user.userid)
-      getCar(userStore.state.user.userid)
-      getRecommend(userStore.state.user.userid, userStore.state.recommend.page)
+      if (userStore.state.firstGetCar) getCar(userStore.state.user.userid)
+      if (userStore.state.firstRecommend)
+        getRecommend(
+          userStore.state.user.userid,
+          userStore.state.recommend.page
+        )
     }, 200)
     const currentId = ref(-1)
     const show = ref(false)
@@ -145,11 +148,6 @@ export default {
     const checkall = (e) => {
       store.commit('User/modCarCheckedAll', e.target.checked)
     }
-    const getPrice = () => {
-      console.log(userStore.state.myCar.shops)
-      let list = userStore.state.myCar.shops.filter((i) => i.checked)
-      console.log(list)
-    }
     return {
       currentId,
       show,
@@ -162,7 +160,6 @@ export default {
       changeDef,
       submitCar,
       checkall,
-      totprice,
     }
   },
 }

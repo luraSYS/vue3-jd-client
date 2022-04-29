@@ -1,12 +1,14 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 // 一级路由
-import Home from '../views/Home/Home.vue'
+import Home from '../views/Home'
 import Mine from '../views/Mine'
 import Address from '../views/Address'
 import Car from '../views/ShoppingCar'
 import Category from '../views/Category'
 import Account from '../views/Account'
 // 二级路由
+import MyHome from '../views/Home/MyHome'
+import Detail from '../views/Home/Detail'
 import Login from '../views/Mine/Login'
 import LogByPhone from '../views/Mine/Login/Byphone.vue'
 import Register from '../views/Mine/Register'
@@ -24,6 +26,10 @@ const routes = [
     name: 'home',
     component: Home,
     meta: { showH: true, showF: true },
+    children: [
+      { path: '', name: 'myhome', component: MyHome },
+      { path: 'detail', meta: { showF: false }, component: Detail },
+    ],
   },
   {
     path: '/mine',

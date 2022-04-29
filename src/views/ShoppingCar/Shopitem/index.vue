@@ -18,32 +18,50 @@
           button-size="22"
           max="99"
           :integer="true"
+          @plus="numchange('plus')"
+          @minus="numchange('minus')"
+          @blur="numchange('blur')"
         />
       </template>
     </van-card>
     <template #right>
-      <van-button square text="删除" type="danger" class="btn" />
+      <van-button @click="del" square text="删除" type="danger" class="btn" />
       <van-button square text="收藏" type="primary" class="btn" />
     </template>
   </van-swipe-cell>
 </template>
 
 <script>
-import { ref } from 'vue'
 import store from '@/store'
+import { DelFromCar } from '@/api'
 export default {
   name: 'Shopitem',
   props: ['quantity', 'price', 'desc', 'title', 'showpic', 'checked', 'proid'],
   setup(props) {
-    let count = ref(props.quantity)
     // 改变购物车中商品选中状态
-    let change = (e) => {
+    const change = (e) => {
       let data = { proid: props.proid, checked: e.target.checked }
       store.commit('User/modCarChecked', data)
     }
+    // 购物车中商品数量变化
+    const numchange = (type) => {
+      let typeN = type == 'plus' ? 1 : -1
+      typeN = type == 'blur' ? 0 : typeN
+      let data = { proid: props.proid, quantity: props.quantity, typeN }
+      store.commit('User/modCarNum', data)
+    }
+    // 商品移出购物车
+    const del = () => {
+      let data = {
+        userid: store.state.User.user.userid,
+        proid: props.proid,
+      }
+      DelFromCar(data)
+    }
     return {
-      count,
       change,
+      numchange,
+      del,
     }
   },
 }

@@ -2,7 +2,11 @@
   <div class="shopping-container">
     <div class="shopping" :data-proid="proid">
       <div class="pro-img">
-        <img class="lazyload" :src="showpic" />
+        <img
+          class="lazyload"
+          :src="showpic"
+          @click="$router.push({ path: '/home/detail', query: { proid } })"
+        />
       </div>
       <div class="pro-detail">{{ detail }}</div>
       <div class="pro-info">
@@ -15,16 +19,26 @@
 </template>
 
 <script>
+import userStore from '@/store/user'
+import { AddToCar } from '@/api'
 export default {
   props: ['showpic', 'proid', 'price', 'detail', 'proname', 'check'],
   name: 'Shop',
   setup(props) {
     // 添加商品入购物车
     const add = () => {
+      let data = {
+        userid: userStore.state.user.userid,
+        proid: props.proid,
+      }
+      AddToCar(data)
+    }
+    const goToDetail = () => {
       console.log(props.proid)
     }
     return {
       add,
+      goToDetail,
     }
   },
 }

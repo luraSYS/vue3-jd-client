@@ -32,21 +32,22 @@
 import Shop from './Shop/index.vue'
 import { getProduct } from '@/api'
 import { ref } from 'vue'
-import store from '@/store'
+import shopStore from '@/store/shop'
 export default {
   name: 'ShopPart',
   props: ['part', 'head', 'title'],
   components: { Shop },
   setup(props) {
     const page = ref(1)
-    if (props.part == 'boutique') getProduct(props.part, page.value++)
+    if (props.part == 'boutique' && shopStore.state.firstHome)
+      getProduct(props.part, page.value++)
     const loading = ref(false)
     const finished = ref(false)
     const onLoad = () => {
       // 里面放异步函数
       // 执行异步函数期间loading为true，此时onload函数不再触发
       // 异步函数执行完毕手动改loading为flase,再次开启onload函数
-      if (store.state.Shop[props.part].have == true) {
+      if (shopStore.state[props.part].have == true) {
         // 加载状态结束后再置loading为false
         getProduct(props.part, page.value++).then(() => (loading.value = false))
       }

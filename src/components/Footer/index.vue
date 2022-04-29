@@ -1,10 +1,13 @@
 <template>
   <div class="footer">
-    <van-tabbar v-model="active">
+    <van-tabbar v-model="$store.state.Shop.currentRoute">
       <van-tabbar-item to="/home" icon="wap-home">首页</van-tabbar-item>
       <van-tabbar-item to="/category" icon="qr">分类</van-tabbar-item>
       <van-tabbar-item to="/address" icon="location">地址</van-tabbar-item>
-      <van-tabbar-item to="/car" icon="shopping-cart" badge=""
+      <van-tabbar-item
+        to="/car"
+        icon="shopping-cart"
+        :badge="$store.state.User.myCar.tnum"
         >购物车</van-tabbar-item
       >
       <van-tabbar-item
@@ -21,13 +24,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 export default {
   name: 'Footer',
-  setup() {
-    const active = ref('home')
-    return { active }
-  },
+  setup() {},
 }
 </script>
 
