@@ -17,7 +17,17 @@
   </div>
   <div class="features">
     <van-cell title="收货地址管理" is-link value="管理我的地址" />
-    <van-cell title="订单查询" is-link value="管理我的订单" />
+    <van-cell
+      @click="
+        $router.push({
+          path: '/account/order',
+          query: { userid: $store.state.User.user.userid },
+        })
+      "
+      title="订单查询"
+      is-link
+      value="管理我的订单"
+    />
   </div>
   <div class="secure">
     <van-cell title="账号与安全" is-link value="实名认证管理" />
@@ -36,7 +46,7 @@ import { Toast } from 'vant'
 export default {
   name: 'MyAccount',
   setup() {
-    console.log('myaccount')
+    // console.log('myaccount')
     const logout = () => {
       localStorage.setItem('token', '')
       Toast('已安全退出')
