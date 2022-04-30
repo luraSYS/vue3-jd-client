@@ -6,6 +6,8 @@ import Product from './product'
 import Address from './address'
 // 导入处理购物车请求
 import Car from './shoppingcar'
+// 导入处理订单请求
+import Order from './order'
 
 import store from '@/store'
 import { Toast } from 'vant'
@@ -63,12 +65,16 @@ export async function getProduct(part, page) {
     store.commit('Shop/saveProduct', { data: res.data, part })
   else store.commit('Shop/stopProduct', part)
 }
-
 // 获取推荐商品
 export async function getRecommend(userid, page) {
   const res = await Product.reqRecommend(userid, page)
   if (res.status == 0) store.commit('User/saveRecommend', res.data)
   else store.commit('User/stopRecommend')
+}
+// 获取商品详细信息
+export async function getProductDetail(proid) {
+  const res = await Product.reqProductDetail(proid)
+  if (res.status == 0) store.commit('Shop/saveCurrentShop', res.data)
 }
 
 // 三、收货地址相关
@@ -115,4 +121,19 @@ export async function AddToCar(data) {
 export async function DelFromCar(data) {
   const res = await Car.reqDelFromCar(data)
   if (res.status == 0) store.commit('User/delFromCar', data.proid)
+}
+
+// 五、用户订单相关
+// 获取用户所有订单号
+export async function getOrder(userid) {
+  let orderList = []
+  const { status, data, message } = await Order.reqGetOrderId(userid)
+  if (status == 0)
+    for (let i = 0; i < data.length; i++) {
+      let d = { userid, orderitemid: data[i].orderitemid }
+      const { data: item } = await Order.reqGetOrderDetail(d)
+      orderList.push(item)
+    }
+  else Toast(message)
+  return store.commit('User/saveOrders', orderList)
 }
