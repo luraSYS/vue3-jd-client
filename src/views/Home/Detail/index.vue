@@ -1,20 +1,26 @@
 <template>
   <div class="detail-container">
     <div class="img-part">
-      <div class="img-num">1<span style="font-size: 12px">/ 6</span></div>
-      <van-swipe class="my-swipe" :show-indicators="false">
-        <van-swipe-item><img src="@/assets/005.jpg" /></van-swipe-item>
-        <van-swipe-item><img src="@/assets/005.jpg" /></van-swipe-item>
-        <van-swipe-item><img src="@/assets/005.jpg" /></van-swipe-item>
-        <van-swipe-item><img src="@/assets/005.jpg" /></van-swipe-item>
+      <div class="img-num">
+        {{ index + 1 }}
+        <span style="font-size: 12px">
+          / {{ $store.state.Shop.current.pics.length }}
+        </span>
+      </div>
+      <van-swipe class="my-swipe" :show-indicators="false" @change="modindex">
+        <van-swipe-item
+          v-for="(pic, i) in $store.state.Shop.current.pics"
+          :key="i"
+        >
+          <img :src="pic" />
+        </van-swipe-item>
       </van-swipe>
     </div>
     <div class="price-part">
       <van-submit-bar
-        :price="3050"
+        :price="$store.state.Shop.current.info.price * 100"
         label="单价"
-        :suffix-label="' ￥' + '32.10'"
-        button-text="提交订单"
+        :suffix-label="' ￥' + $store.state.Shop.current.info.yprice"
         text-align="left"
       >
         <template #button>
@@ -33,12 +39,12 @@
       <div class="ads"><span class="tag">HB超市</span>一站式屯生活好物</div>
       <div class="title">
         <span class="tag">自营</span>
-        <span class="proname"
-          >8848钛合金手机8848钛合金手机8848钛合金手机8848钛合金手机</span
-        >
+        <span class="proname">
+          {{ $store.state.Shop.current.info.proname }}
+        </span>
       </div>
       <div class="desc">
-        商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息商品描述信息
+        {{ $store.state.Shop.current.info.detail }}
       </div>
     </div>
     <div class="insurance">
@@ -72,7 +78,9 @@
       </div>
       <div class="row">
         <span style="font-weight: 700; padding-right: 16px">送至</span>
-        <span class="text">吉林省长春市宽城区雷克萨斯85号</span>
+        <span class="text">{{
+          $store.state.User.addressList.current.address
+        }}</span>
         <van-icon name="weapp-nav" size="14" />
       </div>
     </div>
@@ -92,7 +100,11 @@
     </div>
     <van-action-bar>
       <van-action-bar-icon icon="shop-o" color="#f22f15" text="店铺" />
-      <van-action-bar-icon icon="cart-o" text="购物车" />
+      <van-action-bar-icon
+        icon="cart-o"
+        :badge="$store.state.User.myCar.tnum"
+        text="购物车"
+      />
       <van-action-bar-button type="danger" text="加入购物车" />
       <van-action-bar-button type="warning" text="立即购买" />
     </van-action-bar>
@@ -100,8 +112,20 @@
 </template>
 
 <script>
+import { getProductDetail } from '@/api'
+import { useRoute } from 'vue-router'
+import { ref } from 'vue'
 export default {
   name: 'Detail',
+  setup() {
+    let index = ref(0)
+    const route = useRoute()
+    const modindex = (e) => {
+      index.value = e
+    }
+    getProductDetail(route.query.proid)
+    return { index, modindex }
+  },
 }
 </script>
 
