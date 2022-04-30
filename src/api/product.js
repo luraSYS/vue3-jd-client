@@ -8,7 +8,11 @@ const reqProductPart = (part, page) =>
 const reqRecommend = (userid, page) =>
   $http({ url: `/product/recommend`, params: { userid, page } })
 
+// 获取商品详细信息
+const reqProductDetail = (proid) =>
+  $http({ url: '/product/detail', params: { proid } })
 export default {
   reqProductPart,
   reqRecommend,
+  reqProductDetail,
 }
