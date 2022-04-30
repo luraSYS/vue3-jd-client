@@ -5,6 +5,7 @@ export default {
     visitedAddress: false,
     firstRecommend: true,
     firstGetCar: true,
+    firstGetOrders: true,
     user: {
       // 用户信息相关(userinfo)
       account: 0,
@@ -40,6 +41,9 @@ export default {
       checkedAll: false,
       tprice: 0,
       tnum: 0,
+    },
+    myOrder: {
+      orders: [],
     },
   },
   getters: {},
@@ -166,6 +170,11 @@ export default {
           return (item.quantity = data.quantity + data.typeN)
         }
       })
+    },
+    saveOrders(state, orders) {
+      state.myOrder.orders = []
+      state.firstGetOrders = false
+      state.myOrder.orders.push(...orders)
     },
   },
   actions: {},

@@ -108,7 +108,10 @@ export default {
       shops: [],
     },
     // 当前商品信息
-    current: {},
+    current: {
+      info: [],
+      pics: [],
+    },
   },
   getters: {},
   mutations: {
@@ -119,6 +122,12 @@ export default {
     },
     stopProduct(state, part) {
       state[part].have = false
+    },
+    saveCurrentShop(state, pro) {
+      pro.price = parseFloat(pro.price)
+      pro.yprice = (parseFloat(pro.price) * 1.2).toFixed(2)
+      state.current.info = pro
+      state.current.pics = Object.values(pro).filter((i) => /^http/.test(i))
     },
     modCurrentRoute(state, path) {
       if (path == '/home') state.currentRoute = 0
