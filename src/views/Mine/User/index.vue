@@ -102,9 +102,7 @@ import Header2 from '@/components/Header/Header2.vue'
 import Shop from '@/components/ShopPart/Shop'
 import ShopsRecommend from '@/components/ShopPart/Shops_rec'
 import { mapState } from 'vuex'
-import userStore from '@/store/user'
 import { useRouter } from 'vue-router'
-import { Toast } from 'vant'
 import { ref } from 'vue'
 export default {
   name: 'User',
@@ -124,9 +122,6 @@ export default {
     const toLogin = () => {
       router.push({ path: '/mine/login' })
     }
-    setTimeout(() => {
-      if (!userStore.state.isLogin) Toast('请前往登录')
-    }, 200)
     return {
       actions,
       showPopover,
