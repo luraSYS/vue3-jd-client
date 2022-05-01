@@ -77,13 +77,7 @@ import Header2 from '@/components/Header/Header2.vue'
 import Shopitem from './Shopitem'
 import ShopsRecommend from '@/components/ShopPart/Shops_rec'
 import { ref } from 'vue'
-import {
-  addAddress,
-  getAddress,
-  getCar,
-  getRecommend,
-  setDefAddress,
-} from '@/api'
+import { addAddress, setDefAddress } from '@/api'
 import userStore from '@/store/user'
 import store from '@/store'
 import { Toast } from 'vant'
@@ -93,16 +87,6 @@ export default {
   components: { Header2, Shopitem, ShopsRecommend },
   setup() {
     // console.log('car')
-    setTimeout(() => {
-      if (!userStore.state.visitedAddress)
-        getAddress(userStore.state.user.userid)
-      if (userStore.state.firstGetCar) getCar(userStore.state.user.userid)
-      if (userStore.state.firstRecommend)
-        getRecommend(
-          userStore.state.user.userid,
-          userStore.state.recommend.page
-        )
-    }, 200)
     const currentId = ref(-1)
     const show = ref(false)
     const showArea = ref(false)
