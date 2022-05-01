@@ -28,7 +28,7 @@ export async function userLogin(values) {
     localStorage.setItem('token', res.token)
     // 登录成功延迟1s后进入主页
     setTimeout(() => {
-      getUser()
+      getInfo()
       router.push({ path: '/mine' })
     }, 1000)
   }
@@ -40,7 +40,7 @@ export async function userLogin2(values) {
     localStorage.setItem('token', res.token)
     // 登录成功延迟1s后进入主页
     setTimeout(() => {
-      getUser()
+      getInfo()
       router.push({ path: '/mine' })
     }, 1000)
   }
@@ -51,7 +51,7 @@ export async function userRegister(values) {
   if (res.status == 0) {
     setTimeout(() => {
       router.push({ path: '/mine/login' })
-    }, 1200)
+    }, 1000)
   }
   Toast(res.message)
 }
@@ -136,4 +136,16 @@ export async function getOrder(userid) {
     }
   else Toast(message)
   return store.commit('User/saveOrders', orderList)
+}
+
+// 获取一套用户信息
+export async function getInfo() {
+  const res = await User.reqGetUser()
+  if (res.status == 1) return Toast('请先登录')
+  const user = res.data
+  store.commit('User/saveUser', res.data)
+  if (store.state.User.firstGetCar) getCar(user.userid)
+  if (!store.state.User.visitedAddress) getAddress(user.userid)
+  if (store.state.User.firstRecommend)
+    getRecommend(user.userid, store.state.User.recommend.page)
 }

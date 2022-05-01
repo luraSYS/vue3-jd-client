@@ -9,7 +9,7 @@
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { ref, watch } from 'vue'
-import { getUser } from '@/api'
+import { getInfo } from '@/api'
 import { useRoute } from 'vue-router'
 import store from '@/store'
 
@@ -19,7 +19,7 @@ export default {
     Footer,
   },
   setup() {
-    getUser()
+    getInfo()
     const route = useRoute()
     let showToTop = ref(false)
     const goTop = () => {
