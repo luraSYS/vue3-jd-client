@@ -11,6 +11,8 @@ const reqSetDefAddress = (data) =>
 // 添加新的收货地址
 const reqAddAddress = (data) =>
   $http({ method: 'post', url: '/address/add', data })
+const reqAddAddress2 = (data) =>
+  $http({ method: 'post', url: '/address/add2', data })
 
 // 修改收货地址
 const reqModAddress = (data, Aid, Uid) =>
@@ -24,4 +26,5 @@ export default {
   reqSetDefAddress,
   reqAddAddress,
   reqModAddress,
+  reqAddAddress2,
 }

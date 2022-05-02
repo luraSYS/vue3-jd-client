@@ -98,6 +98,12 @@ export async function addAddress(data) {
   // console.log(res)
   if (res.status == 0) getAddress(data.userid)
 }
+export async function addAddress2(data) {
+  const res = await Address.reqAddAddress2(data)
+  console.log(res)
+  if (res.status == 0) getAddress(data.userid)
+  Toast(res.message)
+}
 // 修改收货地址
 export async function modAddress(data, receiptid, userid) {
   const res = await Address.reqModAddress(data, receiptid, userid)
@@ -113,8 +119,20 @@ export async function getCar(userid) {
 }
 // 添加商品至购物车
 export async function AddToCar(data) {
+  let product = {
+    proid: data.proid,
+    checked: true,
+    quantity: 1,
+  }
+  // 从商品详情处添加（加上商品信息）
+  if (store.state.Shop.current.have) {
+    product.proname = store.state.Shop.current.info.proname
+    product.detail = store.state.Shop.current.info.detail
+    product.showpic = store.state.Shop.current.info.showpic
+    product.price = store.state.Shop.current.info.price.toFixed(2)
+  }
   const res = await Car.reqAddToCar(data)
-  if (res.status == 0) store.commit('User/addToCar', data.proid)
+  if (res.status == 0) store.commit('User/addToCar', product)
   Toast(res.message)
 }
 
@@ -141,7 +159,8 @@ export async function getOrder(userid) {
 // 获取一套用户信息
 export async function getInfo() {
   const res = await User.reqGetUser()
-  if (res.status == 1) return Toast('请先登录')
+  // console.log(res)
+  if (!res || res.status == 1) return Toast('请先登录')
   const user = res.data
   store.commit('User/saveUser', res.data)
   if (store.state.User.firstGetCar) getCar(user.userid)
