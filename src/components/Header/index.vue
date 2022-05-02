@@ -1,8 +1,18 @@
 <template>
   <div class="header-container">
-    <van-nav-bar @click-left="onClickLeft" fixed>
+    <van-nav-bar fixed>
       <template #left>
-        <van-icon name="wap-nav" />
+        <van-popover
+          v-model:show="showPopoverL"
+          placement="right-start"
+          theme="dark"
+          :actions="actionsL"
+          @select="onSelect"
+        >
+          <template #reference>
+            <van-icon name="wap-nav" />
+          </template>
+        </van-popover>
       </template>
       <template #title>
         <div class="search">
@@ -31,25 +41,42 @@
 <script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import userStore from '@/store/user'
+import { Toast } from 'vant'
 export default {
   name: 'Header',
   setup() {
-    const onClickLeft = () => history.back()
     const router = useRouter()
     const showPopover = ref(false)
     const actions = [
-      { path: '/account', text: '个人中心', icon: 'flower-o' },
-      { path: '/account/order', text: '我的订单', icon: 'orders-o' },
-      { path: '/address', text: '我的地址', icon: 'logistics' },
+      { private: true, path: '/account', text: '个人中心', icon: 'flower-o' },
+      {
+        private: true,
+        path: '/account/order',
+        text: '我的订单',
+        icon: 'orders-o',
+      },
+      { private: true, path: '/address', text: '我的地址', icon: 'logistics' },
+    ]
+    const showPopoverL = ref(false)
+    const actionsL = [
+      { private: false, path: '/home', text: '首页', icon: 'shop-collect-o' },
+      { private: false, path: '/car', text: '购物车', icon: 'cart-o' },
+      { private: true, path: '/address', text: '收货地址', icon: 'logistics' },
+      { private: false, path: '/category', text: '商品分类', icon: 'qr' },
+      { private: false, path: '/mine', text: '我的', icon: 'contact' },
     ]
     const onSelect = (action) => {
+      if (!action.private) return router.push({ path: action.path })
+      if (!userStore.state.isLogin) return Toast('请先登录')
       router.push({ path: action.path })
     }
     return {
-      onClickLeft,
       onSelect,
       showPopover,
+      showPopoverL,
       actions,
+      actionsL,
     }
   },
 }
