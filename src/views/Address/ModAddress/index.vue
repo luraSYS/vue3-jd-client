@@ -14,7 +14,7 @@ import { areaList } from '@vant/area-data'
 
 import { Toast } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
-import { addAddress, modAddress } from '@/api'
+import { addAddress2, modAddress } from '@/api'
 import userstore from '@/store/user'
 export default {
   setup() {
@@ -40,7 +40,10 @@ export default {
         def: e.isDefault,
       }
       if (route.query.type == 'edit') modAddress(data, e.id, userid)
-      else addAddress(data)
+      else {
+        data.userid = userid
+        addAddress2(data)
+      }
       router.push({ path: '/address' })
     }
     const onDelete = () => Toast('delete')
