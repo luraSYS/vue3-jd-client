@@ -6,6 +6,7 @@ import Address from '../views/Address'
 import Car from '../views/ShoppingCar'
 import Category from '../views/Category'
 import Account from '../views/Account'
+import Error from '../views/Error'
 // 二级路由
 import MyHome from '../views/Home/MyHome'
 import Detail from '../views/Home/Detail'
@@ -76,12 +77,27 @@ const routes = [
       { path: 'order', component: Order },
     ],
   },
+  {
+    path: '/error',
+    name: 'error',
+    component: Error,
+    meta: { showH: false, showF: false },
+  },
 ]
-// 待完成：前置导航守卫（拦截未登录进入权限界面）
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
 })
 
+// 前置导航守卫（拦截未登录进入权限界面）
+router.beforeEach((to, from, next) => {
+  const reg = /^\/(address)|(account)/
+  if (reg.test(to.path)) {
+    if (!localStorage.getItem('token')) return next({ path: '/error' })
+    if (localStorage.getItem('token') == 'logout')
+      return next({ path: '/mine' })
+  }
+  return next()
+})
 export default router
