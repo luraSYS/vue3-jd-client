@@ -55,7 +55,7 @@
       :proid="item.proid"
     />
   </div>
-  <ShopsRecommend recommendTxt="可能您还想要" class="a" />
+  <ShopsRecommend recommendTxt="可能您还想要" />
   <div class="border"></div>
   <!-- 总计部分 -->
   <van-submit-bar
@@ -77,11 +77,18 @@ import Header2 from '@/components/Header/Header2.vue'
 import Shopitem from './Shopitem'
 import ShopsRecommend from '@/components/ShopPart/Shops_rec'
 import { ref } from 'vue'
-import { addAddress, setDefAddress } from '@/api'
+import {
+  addAddress,
+  addOrderItem,
+  addOrders,
+  DelFromCar,
+  setDefAddress,
+} from '@/api'
 import userStore from '@/store/user'
 import store from '@/store'
 import { Toast } from 'vant'
 import { areaList } from '@vant/area-data'
+import { getTime } from '@/utils/checkinfo'
 export default {
   name: 'Car',
   components: { Header2, Shopitem, ShopsRecommend },
@@ -125,9 +132,41 @@ export default {
       }
       setDefAddress(data)
     }
-    // 结算购物车
+    // 结算购物车(添加订单、选中商品移出购物车)
     const submitCar = () => {
-      console.log('结算')
+      let receiptid = userStore.state.addressList.current.id
+      let account = userStore.state.user.account
+      if (receiptid == -1) return Toast('亲，您还没有填设置您的地址')
+      if (account < userStore.state.myCar.tprice)
+        return Toast('亲，您的钱包好像有点撑不住')
+      // 1.找到选中商品集list
+      let orderitemid = +new Date()
+      let time = getTime(orderitemid)
+      let pay = 0
+      let userid = userStore.state.user.userid
+      const neworder = []
+      const list = userStore.state.myCar.shops.filter((item) => item.checked)
+      if (!list.length) return Toast('亲,您还没有选中的商品')
+      // 2.选中商品移出购物车与添加至订单
+      list.forEach((item) => {
+        let data = {
+          detail: item.detail,
+          orderitemid,
+          price: item.price,
+          proname: item.proname,
+          quantity: item.quantity,
+          receiptid,
+          showpic: item.showpic,
+          time,
+        }
+        pay += parseFloat(item.price) * item.quantity.toFixed(2)
+        neworder.push(data)
+        addOrderItem({ ...data, userid, proid: item.proid })
+        DelFromCar({ userid, proid: item.proid })
+      })
+      store.commit('User/addOrders', neworder)
+      let data2 = { orderitemid, userid, pay, time, receiptid }
+      addOrders(data2)
     }
     const checkall = (e) => {
       store.commit('User/modCarCheckedAll', e.target.checked)

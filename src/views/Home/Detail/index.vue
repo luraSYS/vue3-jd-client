@@ -104,16 +104,19 @@
         icon="cart-o"
         :badge="$store.state.User.myCar.tnum"
         text="购物车"
+        to="/car"
       />
-      <van-action-bar-button type="danger" text="加入购物车" />
-      <van-action-bar-button type="warning" text="立即购买" />
+      <van-action-bar-button @click="add" type="danger" text="加入购物车" />
+      <van-action-bar-button @click="buy" type="warning" text="立即购买" />
     </van-action-bar>
   </div>
 </template>
 
 <script>
-import { getProductDetail } from '@/api'
+import userStore from '@/store/user'
+import { getProductDetail, AddToCar } from '@/api'
 import { useRoute } from 'vue-router'
+import { Toast } from 'vant'
 import { ref } from 'vue'
 export default {
   name: 'Detail',
@@ -123,8 +126,19 @@ export default {
     const modindex = (e) => {
       index.value = e
     }
+    const add = () => {
+      if (!userStore.state.isLogin) return Toast('还未登录哦亲~')
+      let data = {
+        userid: userStore.state.user.userid,
+        proid: parseInt(route.query.proid),
+      }
+      AddToCar(data)
+    }
+    const buy = () => {
+      Toast('此功能正在完善中')
+    }
     getProductDetail(route.query.proid)
-    return { index, modindex }
+    return { index, modindex, add, buy }
   },
 }
 </script>
@@ -135,8 +149,7 @@ export default {
   color: #333;
   .img-part {
     position: relative;
-    width: 375px;
-    height: 375px;
+    width: 100%;
     background-color: #fff;
     img {
       width: 100%;

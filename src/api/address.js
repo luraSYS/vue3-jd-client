@@ -21,10 +21,15 @@ const reqModAddress = (data, Aid, Uid) =>
     url: `/address/mod?receiptid=${Aid}&userid=${Uid}`,
     data,
   })
+
+// 删除收货地址
+const reqDelAddress = (receiptid) =>
+  $http({ method: 'post', url: 'address/remove', data: { receiptid } })
 export default {
   reqAddress,
   reqSetDefAddress,
   reqAddAddress,
   reqModAddress,
   reqAddAddress2,
+  reqDelAddress,
 }

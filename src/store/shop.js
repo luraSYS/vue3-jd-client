@@ -109,6 +109,7 @@ export default {
     },
     // 当前商品信息
     current: {
+      have: false,
       info: [],
       pics: [],
     },
@@ -126,6 +127,7 @@ export default {
     saveCurrentShop(state, pro) {
       pro.price = parseFloat(pro.price)
       pro.yprice = (parseFloat(pro.price) * 1.2).toFixed(2)
+      state.current.have = true
       state.current.info = pro
       state.current.pics = Object.values(pro).filter((i) => /^http/.test(i))
     },

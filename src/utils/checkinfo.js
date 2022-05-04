@@ -14,3 +14,19 @@ export const checkphone = (val) => {
   if (!flag) Toast('请输入正确手机号')
   return flag
 }
+
+// 获取当前时间
+export const getTime = (time) => {
+  const date = new Date(time)
+  let month = date.getMonth() + 1
+  let day = date.getDate()
+  let hour = date.getHours()
+  let minute = date.getMinutes()
+  let second = date.getSeconds()
+  month = month >= 1 && month <= 9 ? '0' + month : month
+  day = day >= 0 && day <= 9 ? '0' + day : day
+  hour = hour >= 0 && hour <= 9 ? '0' + hour : hour
+  minute = minute >= 0 && minute <= 9 ? '0' + minute : minute
+  second = second >= 0 && second <= 9 ? '0' + second : second
+  return `${date.getFullYear()}-${month}-${day} ${hour}:${minute}:${second}`
+}

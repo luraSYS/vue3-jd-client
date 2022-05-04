@@ -52,7 +52,12 @@
         <van-grid-item icon="debit-pay" text="待付款" />
         <van-grid-item icon="send-gift-o" text="待收货" />
         <van-grid-item icon="balance-pay" text="退换/售后" />
-        <van-grid-item icon="orders-o" text="全部订单" icon-color="#ee6370" />
+        <van-grid-item
+          @click="$router.push({ path: '/account/order' })"
+          icon="orders-o"
+          text="全部订单"
+          icon-color="#ee6370"
+        />
       </van-grid>
     </div>
     <div class="my-cut">

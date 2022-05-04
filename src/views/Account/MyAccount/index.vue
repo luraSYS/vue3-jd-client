@@ -16,7 +16,12 @@
     </div>
   </div>
   <div class="features">
-    <van-cell title="收货地址管理" is-link value="管理我的地址" />
+    <van-cell
+      @click="$router.push({ path: '/address' })"
+      title="收货地址管理"
+      is-link
+      value="管理我的地址"
+    />
     <van-cell
       @click="
         $router.push({
@@ -48,7 +53,7 @@ export default {
   setup() {
     // console.log('myaccount')
     const logout = () => {
-      localStorage.setItem('token', '')
+      localStorage.setItem('token', 'logout')
       Toast('已安全退出')
       location.reload()
     }

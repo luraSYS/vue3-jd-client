@@ -52,6 +52,9 @@ export default {
       state.user = { ...state.user, ...value }
       state.isLogin = true
     },
+    modUserAccount(state, value) {
+      state.user.account = value
+    },
     saveRecommend(state, items) {
       if (items.length < 8) state.recommend.have = false
       state.recommend.page += 1
@@ -81,6 +84,13 @@ export default {
     modAddress(state) {
       state.visitedAddress = false
     },
+    delAddress(state, receiptid) {
+      let index = -1
+      state.addressList.address.some((item, i) => {
+        if (item.id == receiptid) return (index = i)
+      })
+      state.addressList.address.splice(index, 1)
+    },
     saveCars(state, items) {
       state.firstGetCar = false
       state.myCar.shops = []
@@ -94,24 +104,26 @@ export default {
         0
       )
     },
-    addToCar(state, proid) {
+    addToCar(state, product) {
       // 1.从推荐模块获取商品信息 2.检查该商品是否在购物车商品数组中
       // 3.在则修改购物车中该商品数量若选中则修改总价
       // 4.否则加入数组并手动修改总价,检查是否购物车非空
       // 5.修改总量
-      let shop = []
+      let shop = {}
       state.recommend.shops.some((item) => {
-        if (item.proid == proid) return (shop = item)
+        if (item.proid == product.proid) return (shop = item)
       })
       let flag = state.myCar.shops.some((item) => {
-        if (item.proid == proid) {
-          if (item.checked) state.myCar.tprice += parseFloat(item.price)
+        if (item.proid == product.proid) {
+          if (item.checked) {
+            state.myCar.tprice += parseFloat(item.price)
+            state.myCar.tnum += 1
+          }
           return (item.quantity += 1)
         }
       })
       if (!flag) {
-        shop.checked = true
-        shop.quantity = 1
+        shop = Object.assign(product, shop)
         state.myCar.tprice += parseFloat(shop.price)
         state.myCar.shops.push(shop)
         state.myCar.isEmpty = false
@@ -175,6 +187,10 @@ export default {
       state.myOrder.orders = []
       state.firstGetOrders = false
       state.myOrder.orders.push(...orders)
+    },
+    addOrders(state, neworder) {
+      // console.log(neworder)
+      state.myOrder.orders.unshift(neworder)
     },
   },
   actions: {},

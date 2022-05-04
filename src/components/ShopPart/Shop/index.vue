@@ -21,12 +21,14 @@
 <script>
 import userStore from '@/store/user'
 import { AddToCar } from '@/api'
+import { Toast } from 'vant'
 export default {
   props: ['showpic', 'proid', 'price', 'detail', 'proname', 'check'],
   name: 'Shop',
   setup(props) {
     // 添加商品入购物车
     const add = () => {
+      if (!userStore.state.isLogin) return Toast('还未登录哦亲~')
       let data = {
         userid: userStore.state.user.userid,
         proid: props.proid,

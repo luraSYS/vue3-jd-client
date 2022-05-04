@@ -55,6 +55,11 @@ export async function userRegister(values) {
   }
   Toast(res.message)
 }
+// 修改用户账户余额
+export async function UserModAccount(data) {
+  const res = await User.reqModAccout(data)
+  if (res.status == 0) store.commit('User/modUserAccount', data.account)
+}
 
 // 二、商品相关
 // 特别注意：上拉刷新有关的若是刚好为8的整数倍要手动停止（res为失败的数据）
@@ -110,6 +115,12 @@ export async function modAddress(data, receiptid, userid) {
   if (res.status == 0) store.commit('User/modAddress')
   Toast(res.message)
 }
+// 删除收货地址
+export async function delAddress(receiptid) {
+  const res = await Address.reqDelAddress(receiptid)
+  if (res.status == 0) store.commit('User/delAddress', receiptid)
+  Toast(res.message)
+}
 
 // 四、购物车相关
 // 获取用户购物车信息
@@ -154,6 +165,20 @@ export async function getOrder(userid) {
     }
   else Toast(message)
   return store.commit('User/saveOrders', orderList)
+}
+// 结算商品，添加至订单表
+export async function addOrders(data) {
+  // console.log(data)
+  const res = await Order.reqAddOrder(data)
+  if (!res || res.status == 1) return Toast('添加至订单失败')
+  // 修改用户账户余额
+  const account = (store.state.User.user.account - data.pay).toFixed(2)
+  UserModAccount({ account, userid: data.userid })
+  Toast('添加至订单成功')
+}
+// 添加至订单详情
+export async function addOrderItem(data) {
+  await Order.reqAddOrderItem(data)
 }
 
 // 获取一套用户信息
