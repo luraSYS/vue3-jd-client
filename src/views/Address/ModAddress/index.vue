@@ -1,9 +1,9 @@
 <template>
   <van-address-edit
     :address-info="data"
-    show-delete
+    :show-delete="$route.query.type == 'edit'"
     :area-list="areaList"
-    show-set-default
+    :show-set-default="$route.query.type == 'edit'"
     @save="onSave"
     @delete="onDelete"
   />
@@ -11,10 +11,8 @@
 
 <script>
 import { areaList } from '@vant/area-data'
-
-import { Toast } from 'vant'
 import { useRoute, useRouter } from 'vue-router'
-import { addAddress2, modAddress } from '@/api'
+import { addAddress2, delAddress, modAddress } from '@/api'
 import userstore from '@/store/user'
 export default {
   setup() {
@@ -46,7 +44,10 @@ export default {
       }
       router.push({ path: '/address' })
     }
-    const onDelete = () => Toast('delete')
+    const onDelete = (e) => {
+      delAddress(e.id)
+      router.push({ path: '/address' })
+    }
     return {
       data,
       onSave,
