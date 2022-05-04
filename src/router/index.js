@@ -19,6 +19,7 @@ import ModAddress from '../views/Address/ModAddress'
 import MyAccount from '../views/Account/MyAccount'
 import UserMod from '../views/Account/UserMod'
 import Order from '../views/Account/Order'
+import OrderDetail from '../views/Account/Order/Detail'
 
 const routes = [
   { path: '/', redirect: '/home' },
@@ -75,6 +76,7 @@ const routes = [
       { path: '', component: MyAccount },
       { path: 'mod', component: UserMod },
       { path: 'order', component: Order },
+      { path: 'detail', name: 'odetail', component: OrderDetail },
     ],
   },
   {
