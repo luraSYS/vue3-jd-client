@@ -53,7 +53,7 @@
         <van-grid-item icon="send-gift-o" text="待收货" />
         <van-grid-item icon="balance-pay" text="退换/售后" />
         <van-grid-item
-          @click="$router.push({ path: '/account/order' })"
+          @click="toOrderDetail"
           icon="orders-o"
           text="全部订单"
           icon-color="#ee6370"
@@ -109,6 +109,7 @@ import ShopsRecommend from '@/components/ShopPart/Shops_rec'
 import { mapState } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { Toast } from 'vant'
 export default {
   name: 'User',
   components: { Shop, Header2, ShopsRecommend },
@@ -127,11 +128,16 @@ export default {
     const toLogin = () => {
       router.push({ path: '/mine/login' })
     }
+    const toOrderDetail = () => {
+      if (!localStorage.getItem('token')) return Toast('请先登录')
+      router.push({ path: '/account/order' })
+    }
     return {
       actions,
       showPopover,
       onSelect,
       toLogin,
+      toOrderDetail,
     }
   },
   computed: {

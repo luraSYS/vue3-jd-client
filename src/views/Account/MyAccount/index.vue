@@ -35,14 +35,32 @@
     />
   </div>
   <div class="secure">
-    <van-cell title="账号与安全" is-link value="实名认证管理" />
-    <van-cell title="HBmark支付密码" is-link value="去设置" />
-    <van-cell title="隐私设置" is-link />
+    <van-cell
+      title="账号与安全"
+      @click="$router.push({ path: '/account/mod' })"
+      is-link
+      value="修改个人信息"
+    />
+    <van-cell @click="tips" title="HBmark支付密码" is-link value="去设置" />
+    <van-cell @click="tips" title="隐私设置" is-link />
   </div>
   <div class="serve">
-    <van-cell title="联系客服" is-link value="即时解答用户疑惑" />
-    <van-cell title="切换站点" is-link />
+    <van-cell
+      @click="go"
+      title="联系客服"
+      is-link
+      value="向作者提出您宝贵的意见"
+    />
+    <van-cell title="切换站点" is-link @click="tips" />
     <van-cell @click="logout" title="退出登录" is-link />
+  </div>
+  <div class="footer">
+    <van-notice-bar
+      scrollable
+      left-icon="warning-o"
+      text="欢迎各位提出宝贵的意见！！！"
+      @click="go"
+    />
   </div>
 </template>
 
@@ -51,14 +69,21 @@ import { Toast } from 'vant'
 export default {
   name: 'MyAccount',
   setup() {
-    // console.log('myaccount')
     const logout = () => {
       localStorage.setItem('token', 'logout')
       Toast('已安全退出')
       location.reload()
     }
+    const go = () => {
+      window.open('https://gitee.com/lura-syxilia/vue3-jd-client')
+    }
+    const tips = () => {
+      Toast('正在完善中')
+    }
     return {
       logout,
+      go,
+      tips,
     }
   },
 }
@@ -115,5 +140,11 @@ export default {
   overflow: hidden;
   border-radius: 15px;
   margin-top: 15px;
+}
+.footer {
+  margin-top: 40px;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
 }
 </style>

@@ -135,7 +135,7 @@ export default {
       AddToCar(data)
     }
     const buy = () => {
-      Toast('此功能正在完善中')
+      Toast('请去购物车结算')
     }
     getProductDetail(route.query.proid)
     return { index, modindex, add, buy }
