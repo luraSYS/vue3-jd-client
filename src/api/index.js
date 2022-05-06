@@ -60,7 +60,24 @@ export async function UserModAccount(data) {
   const res = await User.reqModAccout(data)
   if (res.status == 0) store.commit('User/modUserAccount', data.account)
 }
-
+// 修改用户头像
+export async function userModPic(pic_url, userid) {
+  const res = await User.reqModProfile(pic_url, userid)
+  if (!res || res.status == 1) return
+  store.commit('User/modProfile', pic_url)
+}
+// 修改用户信息
+export async function usermodInfo(info, userid) {
+  const res = await User.reqModUserInfo(info, userid)
+  if (!res || res.status == 1) return Toast('修改用户信息失败')
+  store.commit('User/modInfo', info)
+}
+// 检查用户密码
+export async function checkPsd(data) {
+  const res = await User.reqCheckPsd(data)
+  if (!res || res.status == 1) return Toast('原密码错误')
+  store.commit('User/unLockModPsd')
+}
 // 二、商品相关
 // 特别注意：上拉刷新有关的若是刚好为8的整数倍要手动停止（res为失败的数据）
 // 获取模块商品

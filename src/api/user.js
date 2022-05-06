@@ -19,10 +19,32 @@ const reqGetUser = (data) => $http({ url: '/mine/user', data })
 const reqModAccout = (data) =>
   $http({ method: 'post', url: '/mine/mod/account', data })
 
+// 修改用户头像
+const reqModProfile = (pic_url, userid) =>
+  $http({
+    method: 'post',
+    url: `/mine/mod/profile?userid=${userid}`,
+    data: { userpic: pic_url },
+  })
+
+// 修改用户信息
+const reqModUserInfo = (info, userid) =>
+  $http({
+    method: 'post',
+    url: `/mine/mod/info?userid=${userid}`,
+    data: info,
+  })
+
+// 检查密码是否正确
+const reqCheckPsd = (data) =>
+  $http({ method: 'post', url: '/mine/checkpsd', data })
 export default {
   reqLogin,
   reqLogin2,
   reqRegister,
   reqGetUser,
   reqModAccout,
+  reqModProfile,
+  reqModUserInfo,
+  reqCheckPsd,
 }
