@@ -8,6 +8,7 @@ export const checkname = (val) => {
 export const checkpsd = (val) => {
   let flag = /^[\S]{3,12}$/.test(val)
   if (!flag) Toast('密码必须3到20位，且不能出现空格')
+  return flag
 }
 export const checkphone = (val) => {
   let flag = /^1[3-9]\d{9}$/.test(val)
