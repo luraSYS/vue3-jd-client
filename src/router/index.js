@@ -20,6 +20,8 @@ import MyAccount from '../views/Account/MyAccount'
 import UserMod from '../views/Account/UserMod'
 import Order from '../views/Account/Order'
 import OrderDetail from '../views/Account/Order/Detail'
+import MyCategory from '../views/Category/MyCategory.vue'
+import Cate from '../views/Category/Cate.vue'
 
 const routes = [
   { path: '/', redirect: '/home' },
@@ -66,6 +68,10 @@ const routes = [
     name: 'category',
     component: Category,
     meta: { showH: true, showF: true },
+    children: [
+      { path: '', component: MyCategory },
+      { path: 'cate', name: 'cate', component: Cate },
+    ],
   },
   {
     path: '/account',

@@ -80,7 +80,7 @@ export async function checkPsd(data) {
 }
 // 二、商品相关
 // 特别注意：上拉刷新有关的若是刚好为8的整数倍要手动停止（res为失败的数据）
-// 获取模块商品
+// 获取模块+分类商品
 export async function getProduct(part, page) {
   const res = await Product.reqProductPart(part, page)
   if (res.status == 0)
@@ -102,12 +102,9 @@ export async function getProductDetail(proid) {
 // 三、收货地址相关
 // 获取用户收货地址
 export async function getAddress(userid) {
-  if (!store.state.User.isLogin) Toast('请先登录')
   // 地址渲染完后不再次发请求
-  else {
-    const res = await Address.reqAddress(userid)
-    if (res.status == 0) store.commit('User/saveAddress', res.data)
-  }
+  const res = await Address.reqAddress(userid)
+  if (res.status == 0) store.commit('User/saveAddress', res.data)
 }
 // 设置默认收货地址
 export async function setDefAddress(data) {
@@ -117,20 +114,29 @@ export async function setDefAddress(data) {
 // 添加新的收货地址
 export async function addAddress(data) {
   const res = await Address.reqAddAddress(data)
-  // console.log(res)
   if (res.status == 0) getAddress(data.userid)
 }
 export async function addAddress2(data) {
   const res = await Address.reqAddAddress2(data)
-  console.log(res)
   if (res.status == 0) getAddress(data.userid)
   Toast(res.message)
 }
 // 修改收货地址
 export async function modAddress(data, receiptid, userid) {
   const res = await Address.reqModAddress(data, receiptid, userid)
-  if (res.status == 0) store.commit('User/modAddress')
-  Toast(res.message)
+  if (!res || res.status == 1) return Toast('修改地址信息失败')
+  const mydata = {
+    address: data.address,
+    area: data.area,
+    code: data.code,
+    detail: data.detail,
+    id: parseInt(receiptid),
+    isDefault: data.def,
+    name: data.name,
+    tel: data.phone,
+  }
+  store.commit('User/modAddress', mydata)
+  Toast('修改地址信息成功')
 }
 // 删除收货地址
 export async function delAddress(receiptid) {
