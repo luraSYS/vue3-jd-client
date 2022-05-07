@@ -2,7 +2,7 @@ export default {
   namespaced: true,
   state: {
     isLogin: false,
-    visitedAddress: false,
+    // visitedAddress: false,
     firstRecommend: true,
     firstGetCar: true,
     firstGetOrders: true,
@@ -21,6 +21,13 @@ export default {
       coupon: 0,
       vip_point: 0,
       hongbao: 0,
+    },
+    profile: {
+      modProfileCount: 0,
+      canMod: true,
+    },
+    userstate: {
+      disModPsd: true,
     },
     // 推荐给用户的商品
     recommend: {
@@ -55,6 +62,19 @@ export default {
     modUserAccount(state, value) {
       state.user.account = value
     },
+    modProfile(state, pic_url) {
+      state.user.userpic = pic_url
+      state.profile.modProfileCount += 1
+      if (state.profile.modProfileCount > 2) state.profile.canMod = false
+    },
+    unLockModPsd(state) {
+      state.userstate.disModPsd = false
+    },
+    modInfo(state, info) {
+      state.user.username = info.username
+      state.user.phone = info.phone
+      state.userstate.disModPsd = true
+    },
     saveRecommend(state, items) {
       if (items.length < 8) state.recommend.have = false
       state.recommend.page += 1
@@ -78,11 +98,17 @@ export default {
       items.some((item) => {
         if (item.isDefault) return (state.addressList.current = item)
       })
-      // 改购物车visitedAddress为true(第二次不再发请求)
-      state.visitedAddress = true
     },
-    modAddress(state) {
-      state.visitedAddress = false
+    modAddress(state, data) {
+      state.addressList.address.some((item) => {
+        if (item.id == data.id) {
+          if (!item.isDefault && data.isDefault)
+            state.addressList.address.forEach((i) => (i.isDefault = 0))
+          return Object.assign(item, data)
+        }
+      })
+      if (data.id == state.addressList.current.id)
+        Object.assign(state.addressList.current, data)
     },
     delAddress(state, receiptid) {
       let index = -1
@@ -90,6 +116,11 @@ export default {
         if (item.id == receiptid) return (index = i)
       })
       state.addressList.address.splice(index, 1)
+      if (receiptid == state.addressList.current.id) {
+        state.addressList.current.id = -1
+        state.addressList.current.area = '当前暂未设置收货地址'
+        state.addressList.current.address = '当前暂未设置收货地址'
+      }
     },
     saveCars(state, items) {
       state.firstGetCar = false

@@ -35,6 +35,10 @@ export default {
       have: true,
     },
     digital: {
+      title: '数码产品',
+      descTitle: '满足您视觉听觉的盛宴',
+      shops: [],
+      have: true,
       iconName: ['小米', '华为', '荣耀', 'iPhone', 'vivo', 'OPPO', '魅族'],
       iconName2: [
         '轻薄本',
@@ -45,9 +49,12 @@ export default {
         '显卡',
         '游戏台式机',
       ],
-      shops: [],
     },
     books: {
+      title: '精品图书',
+      descTitle: '海量图书，任君挑选',
+      shops: [],
+      have: true,
       iconName: [
         '小说',
         '动漫/幽默',
@@ -58,9 +65,12 @@ export default {
         '历史',
         '政治',
       ],
-      shops: [],
     },
     cloths: {
+      title: '时尚穿搭',
+      descTitle: '潮流时尚，天下谁人不羡君',
+      shops: [],
+      have: true,
       iconName: [
         '短袖T恤',
         '长袖T恤',
@@ -80,9 +90,12 @@ export default {
         '中二风',
         '大牌风',
       ],
-      shops: [],
     },
-    foods: {
+    food: {
+      title: '美食甜品',
+      descTitle: '新鲜可口，供君体验舌尖上的满足',
+      shops: [],
+      have: true,
       iconName: [
         '进口牛奶',
         '进口酸奶',
@@ -93,9 +106,12 @@ export default {
         '棒棒糖',
         '肉松饼',
       ],
-      shops: [],
     },
     device: {
+      title: '家用电器',
+      descTitle: '省时省力，您的居家必备好伙伴',
+      shops: [],
+      have: true,
       iconName: [
         '洗衣机',
         '冰柜',
@@ -105,7 +121,6 @@ export default {
         '空调',
         '净水器',
       ],
-      shops: [],
     },
     // 当前商品信息
     current: {

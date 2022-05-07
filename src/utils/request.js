@@ -3,13 +3,14 @@ import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
 const request = axios.create({
   baseURL: 'http://127.0.0.1:8080',
-  timeout: 5000,
+  // baseURL: 'https://jd-practice-server.herokuapp.com',
+  timeout: 8000,
 })
 // 请求拦截器--(在请求发出前做的一些事)
 request.interceptors.request.use((config) => {
   // 启动进度条
   nprogress.start()
-  console.log('kaishi' + config.url)
+  // console.log('kaishi' + config.url)
   config.headers.Authorization = localStorage.getItem('token')
   return config
 })
@@ -17,7 +18,7 @@ request.interceptors.request.use((config) => {
 request.interceptors.response.use(
   // 成功的回调
   (res) => {
-    console.log('jieshu')
+    // console.log('jieshu')
 
     // 结束进度条并处理返回的响应数据
     nprogress.done()
